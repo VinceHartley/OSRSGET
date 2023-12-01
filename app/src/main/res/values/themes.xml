@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.OSRSGET" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <instantPrice name="colorPrimary">@color/my_light_primary</instantPrice> -->
+    </style>
+
+    <style name="Theme.OSRSGET" parent="Base.Theme.OSRSGET" />
+</resources>

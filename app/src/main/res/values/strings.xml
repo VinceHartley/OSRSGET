@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">OSRSGET</string>
+
+    <string name="id">Item Id: 1$s</string>
+    <string name="item_name">Item name: 1$s</string>
+    <string name="item_high_price">Item High Price: 1$s</string>
+    <string name="item_low_price">Item Low Price: 1$s</string>
+    <string name="item_volume">Item Volume: 1$s</string>
+
+    <string name="item_filter">Search, Sort, and Filter</string>
+
+</resources>
