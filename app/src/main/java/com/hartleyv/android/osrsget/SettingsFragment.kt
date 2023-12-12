@@ -19,7 +19,7 @@ class SettingsFragment: Fragment() {
         }
 
 
-    private val sharedViewModel: SharedViewModel by viewModels({requireParentFragment()})
+    private val itemListViewModel: ItemListViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -126,7 +126,6 @@ class SettingsFragment: Fragment() {
             buyLimitMax = binding.buyLimitMax.text.toString().toIntOrNull()
         )
 
-
-        sharedViewModel.updateFilterCriteria(newFilterCriteria)
+        itemListViewModel.updateFilterCriteria(newFilterCriteria)
     }
 }
