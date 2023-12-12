@@ -1,5 +1,7 @@
 package com.hartleyv.android.osrsget
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -95,15 +97,97 @@ class SettingsFragment: Fragment() {
                 updateFilterCriteria()
             }
 
-
+                
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        showPreviousFilter()
         setupUserInputListeners()
+    }
+
+    private fun showPreviousFilter() {
+        var filterCriteria = itemListViewModel.getFilterCriteria().value
+
+        binding.apply{
+            searchTextBox.setText(filterCriteria?.searchTerm ?: "")
+
+            when(filterCriteria?.orderColumn.toString().lowercase()) {
+                "buy price" -> {
+                    val toCheck = sortColumn.getChildAt(0) as RadioButton
+                    toCheck.isChecked = true
+                }
+
+                "sell price" -> {
+                    val toCheck = sortColumn.getChildAt(1) as RadioButton
+                    toCheck.isChecked = true
+                }
+
+                "daily volume" -> {
+                    val toCheck = sortColumn.getChildAt(2) as RadioButton
+                    toCheck.isChecked = true
+                }
+
+                "margin" -> {
+                    val toCheck = sortColumn.getChildAt(3) as RadioButton
+                    toCheck.isChecked = true
+                }
+
+                else -> {
+                    for (i in 0 until sortColumn.childCount) {
+                        val radioButton = sortColumn.getChildAt(i) as RadioButton
+                        radioButton.isChecked = false
+                    }
+                }
+            }
+
+            when(filterCriteria?.orderDirection.toString().lowercase()) {
+                "descending" -> {
+                    val toCheck = sortDirection.getChildAt(0) as RadioButton
+                    toCheck.isChecked = true
+                }
+
+                "ascending" -> {
+                    val toCheck = sortDirection.getChildAt(1) as RadioButton
+                    toCheck.isChecked = true
+                }
+
+                else -> {
+                    // assume descending
+                    val descending = sortDirection.getChildAt(0) as RadioButton
+                    val ascending = sortDirection.getChildAt(1) as RadioButton
+
+                    descending.isChecked = true
+                    ascending.isChecked = false
+                }
+            }
+
+            buyPriceMin.setText(filterCriteria?.buyPriceMin?.toString() ?: "")
+            buyPriceMax.setText(filterCriteria?.buyPriceMax?.toString() ?: "")
+            sellPriceMin.setText(filterCriteria?.sellPriceMin?.toString() ?: "")
+            sellPriceMax.setText(filterCriteria?.sellPriceMax?.toString() ?: "")
+            volumeMin.setText(filterCriteria?.volumeMin?.toString() ?: "")
+            volumeMax.setText(filterCriteria?.volumeMax?.toString() ?: "")
+            marginMin.setText(filterCriteria?.marginMin?.toString() ?: "")
+            marginMax.setText(filterCriteria?.marginMax?.toString() ?: "")
+            buyLimitMin.setText(filterCriteria?.buyLimitMin?.toString() ?: "")
+            buyLimitMax.setText(filterCriteria?.buyLimitMax?.toString() ?: "")
+
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+
+        // this fragment should only appear vertically
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     private fun updateFilterCriteria() {

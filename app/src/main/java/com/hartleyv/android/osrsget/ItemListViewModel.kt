@@ -41,7 +41,9 @@ class ItemListViewModel: ViewModel () {
 
     private val _filteredItems = MutableStateFlow<List<CombinedItemListInfo>>(emptyList())
     var filteredItems: StateFlow<List<CombinedItemListInfo>> = _filteredItems.asStateFlow()
-    private val _filterCriteria = MutableLiveData<FilterCriteria>()
+    private val _filterCriteria = MutableLiveData<FilterCriteria>(
+        FilterCriteria(null, null, null, null, null, null, null, null, null, null, null, null, null)
+    )
 
     private var initalDataRetreived = false;
     var setupWorkerFinished = false;
@@ -76,19 +78,35 @@ class ItemListViewModel: ViewModel () {
         //todo implement direction
         sortedList = when(filterCriteria?.orderColumn.toString().lowercase()) {
             "buy price" -> {
-                originalList.sortedBy { it.high }.reversed()
+                if (filterCriteria?.orderDirection == "Descending") {
+                    originalList.sortedBy { it.high }.reversed()
+                } else {
+                    originalList.sortedBy { it.high }
+                }
             }
 
             "sell price" -> {
-                originalList.sortedBy { it.low }.reversed()
+                if (filterCriteria?.orderDirection == "Descending") {
+                    originalList.sortedBy { it.low }.reversed()
+                } else {
+                    originalList.sortedBy { it.low }
+                }
             }
 
             "daily volume" -> {
-                originalList.sortedBy { it.totalVolume }.reversed()
+                if (filterCriteria?.orderDirection == "Descending") {
+                    originalList.sortedBy { it.totalVolume }.reversed()
+                } else {
+                    originalList.sortedBy { it.totalVolume }
+                }
             }
 
             "margin" -> {
-                originalList.sortedBy { it.margin }.reversed()
+                if (filterCriteria?.orderDirection == "Descending") {
+                    originalList.sortedBy { it.margin }.reversed()
+                } else {
+                    originalList.sortedBy { it.margin }
+                }
             }
 
             else -> {

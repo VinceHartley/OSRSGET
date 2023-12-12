@@ -1,5 +1,7 @@
 package com.hartleyv.android.osrsget
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -118,52 +120,16 @@ class ItemListFragment: Fragment() {
 
     }
 
-//    private fun applySettings(filterCriteria: FilterCriteria) {
-//        val originalList = itemListViewModel.listItems.value
-//        val sortedList: List<CombinedItemListInfo>
-//        Log.e("HERE", "IN APPLY SETTINGS")
-//
-//        //todo implement direction
-//        sortedList = when(filterCriteria.orderColumn.toString().lowercase()) {
-//            "buy price" -> {
-//                originalList.sortedBy { it.high }.reversed()
-//            }
-//
-//            "sell price" -> {
-//                originalList.sortedBy { it.low }.reversed()
-//            }
-//
-//            "daily volume" -> {
-//                originalList.sortedBy { it.totalVolume }.reversed()
-//            }
-//
-//            "margin" -> {
-//                originalList.sortedBy { it.margin }.reversed()
-//            }
-//
-//            else -> {
-//                originalList
-//            }
-//        }
-//
-//
-//
-//        val filteredList = sortedList.filter { item ->
-//            (filterCriteria.buyPriceMin == null || item.high != null && item.high >= filterCriteria.buyPriceMin) &&
-//                    (filterCriteria.buyPriceMax == null || item.high != null && item.high <= filterCriteria.buyPriceMax) &&
-//                    (filterCriteria.sellPriceMin == null || item.low != null && item.low >= filterCriteria.sellPriceMin) &&
-//                    (filterCriteria.sellPriceMax == null || item.low != null && item.low <= filterCriteria.sellPriceMax) &&
-//                    (filterCriteria.volumeMin == null || item.totalVolume != null && item.totalVolume >= filterCriteria.volumeMin) &&
-//                    (filterCriteria.volumeMax == null || item.totalVolume != null && item.totalVolume <= filterCriteria.volumeMax) &&
-//                    (filterCriteria.marginMin == null || item.margin != null && item.margin >= filterCriteria.marginMin) &&
-//                    (filterCriteria.marginMax == null || item.margin != null && item.margin <= filterCriteria.marginMax) &&
-//                    (filterCriteria.buyLimitMin == null || item.buyLimit != null && item.buyLimit >= filterCriteria.buyLimitMin) &&
-//                    (filterCriteria.buyLimitMax == null || item.buyLimit != null && item.buyLimit <= filterCriteria.buyLimitMax)
-//        }
-//
-//        itemListViewModel.updateFilteredList(filteredList)
-//
-//    }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        // this fragment should only appear vertically
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
