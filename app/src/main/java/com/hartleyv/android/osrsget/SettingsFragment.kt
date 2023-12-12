@@ -97,7 +97,9 @@ class SettingsFragment: Fragment() {
                 updateFilterCriteria()
             }
 
-                
+            resetButton.setOnClickListener {
+                clearSettings()
+            }
         }
     }
 
@@ -108,12 +110,22 @@ class SettingsFragment: Fragment() {
         setupUserInputListeners()
     }
 
+    private fun clearSettings() {
+        var nullCriteria = FilterCriteria(null, null, null,
+            null, null, null, null, null,
+            null, null, null, null,null)
+
+        itemListViewModel.updateFilterCriteria(
+            nullCriteria
+        )
+
+        showPreviousFilter()
+    }
+
     private fun showPreviousFilter() {
         var filterCriteria = itemListViewModel.getFilterCriteria().value
 
         binding.apply{
-            searchTextBox.setText(filterCriteria?.searchTerm ?: "")
-
             when(filterCriteria?.orderColumn.toString().lowercase()) {
                 "buy price" -> {
                     val toCheck = sortColumn.getChildAt(0) as RadioButton
@@ -133,13 +145,6 @@ class SettingsFragment: Fragment() {
                 "margin" -> {
                     val toCheck = sortColumn.getChildAt(3) as RadioButton
                     toCheck.isChecked = true
-                }
-
-                else -> {
-                    for (i in 0 until sortColumn.childCount) {
-                        val radioButton = sortColumn.getChildAt(i) as RadioButton
-                        radioButton.isChecked = false
-                    }
                 }
             }
 
@@ -164,6 +169,7 @@ class SettingsFragment: Fragment() {
                 }
             }
 
+            searchTextBox.setText(filterCriteria?.searchTerm ?: "")
             buyPriceMin.setText(filterCriteria?.buyPriceMin?.toString() ?: "")
             buyPriceMax.setText(filterCriteria?.buyPriceMax?.toString() ?: "")
             sellPriceMin.setText(filterCriteria?.sellPriceMin?.toString() ?: "")
