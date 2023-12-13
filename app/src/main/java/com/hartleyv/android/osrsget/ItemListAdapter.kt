@@ -1,37 +1,23 @@
 package com.hartleyv.android.osrsget
 
-import android.content.res.Resources
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.hartleyv.android.osrsget.databinding.ListItemItemBinding
 import com.hartleyv.android.osrsget.entities.CombinedItemListInfo
-import com.hartleyv.android.osrsget.entities.InstantPrice
-import com.hartleyv.android.osrsget.entities.InstantPriceAndMapping
 import java.text.NumberFormat
 
 class ItemHolder(
     private val binding: ListItemItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: CombinedItemListInfo) {
-        binding.itemId.text =
-            "Item Id: " + item.itemId.toString()
-        binding.itemName.text = "Item name: " + item.itemName
-        binding.highPrice.text = "Item High Price: " + NumberFormat.getInstance().format(item.high)
-        binding.lowPrice.text = "Item Low Price: " + NumberFormat.getInstance().format(item.low)
-        binding.volume.text = "Daily Item Volume: " +
-                NumberFormat.getInstance().format(item.totalVolume)
-        binding.margin.text = "Margin: " + NumberFormat.getInstance().format(item.margin)
 
-        if (item.buyLimit == null) {
-            binding.buyLimit.text = "Buy Limit: None"
-        } else {
-            binding.buyLimit.text = "Buy Limit: " + NumberFormat.getInstance().format(item.buyLimit)
-        }
-
+        binding.itemName.text = item.itemName
+        binding.highPrice.text = NumberFormat.getInstance().format(item.high)
+        binding.lowPrice.text =  NumberFormat.getInstance().format(item.low)
+        binding.dailyVolume.text = NumberFormat.getInstance().format(item.totalVolume)
+        binding.margin.text = NumberFormat.getInstance().format(item.margin)
 
 
         binding.root.setOnClickListener {
