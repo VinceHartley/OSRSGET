@@ -76,7 +76,7 @@ class ItemListViewModel: ViewModel () {
         val originalList = listItems.value
         val sortedList: List<CombinedItemListInfo>
 
-        //todo implement direction
+        // sort the list ascending or descending based on selected criteria
         sortedList = when(filterCriteria?.orderColumn.toString().lowercase()) {
             "buy price" -> {
                 if (filterCriteria?.orderDirection == "Descending") {
@@ -115,8 +115,8 @@ class ItemListViewModel: ViewModel () {
             }
         }
 
+        // apply a fuzzywuzzy comparison to string search names
         var searchedList = sortedList
-        //todo apply fuzzy search
         if (filterCriteria?.searchTerm != null && filterCriteria.searchTerm != "") {
             searchedList = sortedList.filter {
                 FuzzySearch.partialRatio(
@@ -126,6 +126,7 @@ class ItemListViewModel: ViewModel () {
             }
         }
 
+        // filter the list based on criteria
         val filteredList = searchedList.filter { item ->
             (filterCriteria?.buyPriceMin == null || item.high != null && item.high >= filterCriteria.buyPriceMin) &&
                     (filterCriteria?.buyPriceMax == null || item.high != null && item.high <= filterCriteria.buyPriceMax) &&

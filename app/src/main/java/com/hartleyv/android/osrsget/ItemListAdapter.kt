@@ -13,6 +13,7 @@ class ItemHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: CombinedItemListInfo) {
 
+        //set the data for list items
         binding.itemName.text = item.itemName
         binding.highPrice.text = NumberFormat.getInstance().format(item.high)
         binding.lowPrice.text =  NumberFormat.getInstance().format(item.low)
@@ -22,6 +23,8 @@ class ItemHolder(
         val imageId = itemView.context.resources.getIdentifier("image_${item.itemId}", "drawable", itemView.context.packageName)
         binding.itemImage.setImageResource(imageId)
 
+
+        // list item click listener
         binding.root.setOnClickListener {
             Toast.makeText(
                 binding.root.context,

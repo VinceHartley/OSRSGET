@@ -65,6 +65,7 @@ dependencies {
     implementation ("androidx.navigation:navigation-fragment-ktx:2.4.1")
     implementation ("androidx.navigation:navigation-ui-ktx:2.4.1")
     implementation ("com.github.jens-muenker:fuzzywuzzy-kotlin:1.0.0")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     kapt ("androidx.room:room-compiler:2.4.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

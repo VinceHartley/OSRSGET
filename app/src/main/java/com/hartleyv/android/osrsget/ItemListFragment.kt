@@ -52,7 +52,6 @@ class ItemListFragment: Fragment() {
             .build()
 
         val setupWorkerTag = "SETUP WORKER"
-        //get mapping data
         val setupWorker = OneTimeWorkRequest
             .Builder(SetupWorker::class.java)
             .setConstraints(constraints)
@@ -60,14 +59,16 @@ class ItemListFragment: Fragment() {
             .build()
 
 
-        // get instant data
         val periodicRequest = PeriodicWorkRequestBuilder<PollWorker>(1, TimeUnit.MINUTES)
             .setConstraints(constraints)
             .build()
 
+
+        // setup worker initially pings the wiki API to get fresh data
         WorkManager.getInstance(requireContext())
             .enqueue(setupWorker)
 
+        // the periodic worker updates the data every 15 minutes
         WorkManager.getInstance(requireContext())
             .getWorkInfosByTagLiveData(setupWorkerTag)
             .observeForever { workInfos ->
@@ -80,7 +81,6 @@ class ItemListFragment: Fragment() {
             }
 
 
-        // todo update this so this will update faster than 15 minutes
         WorkManager.getInstance(requireContext())
             .enqueueUniquePeriodicWork(
                 POLL_WORK,
@@ -102,10 +102,12 @@ class ItemListFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // apply filter settings on change
                 itemListViewModel.getFilterCriteria().observe(viewLifecycleOwner) {
                     itemListViewModel.applySettings(it)
                 }
 
+                // view list changes
                 itemListViewModel.filteredItems.collect{ items ->
                    binding.itemRecyclerView.adapter = ItemListAdapter(items)
                }
@@ -113,11 +115,6 @@ class ItemListFragment: Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -139,6 +136,7 @@ class ItemListFragment: Fragment() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // show settings fragment
         return when (item.itemId) {
             R.id.filter_settings -> {
                 showSettingsFragment()
