@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.frosch2010.fuzzywuzzy_kotlin.FuzzySearch
 import com.hartleyv.android.osrsget.entities.CombinedItemListInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -114,9 +115,18 @@ class ItemListViewModel: ViewModel () {
             }
         }
 
+        var searchedList = sortedList
+        //todo apply fuzzy search
+        if (filterCriteria?.searchTerm != null && filterCriteria.searchTerm != "") {
+            searchedList = sortedList.filter {
+                FuzzySearch.partialRatio(
+                    it.itemName?.lowercase() ?: "",
+                    filterCriteria.searchTerm.lowercase()
+                ) >= 80
+            }
+        }
 
-
-        val filteredList = sortedList.filter { item ->
+        val filteredList = searchedList.filter { item ->
             (filterCriteria?.buyPriceMin == null || item.high != null && item.high >= filterCriteria.buyPriceMin) &&
                     (filterCriteria?.buyPriceMax == null || item.high != null && item.high <= filterCriteria.buyPriceMax) &&
                     (filterCriteria?.sellPriceMin == null || item.low != null && item.low >= filterCriteria.sellPriceMin) &&
