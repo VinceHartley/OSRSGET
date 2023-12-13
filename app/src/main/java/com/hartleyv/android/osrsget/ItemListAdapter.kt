@@ -19,6 +19,8 @@ class ItemHolder(
         binding.dailyVolume.text = NumberFormat.getInstance().format(item.totalVolume)
         binding.margin.text = NumberFormat.getInstance().format(item.margin)
 
+        val imageId = itemView.context.resources.getIdentifier("image_${item.itemId}", "drawable", itemView.context.packageName)
+        binding.itemImage.setImageResource(imageId)
 
         binding.root.setOnClickListener {
             Toast.makeText(
