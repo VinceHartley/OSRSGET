@@ -13,6 +13,13 @@
         <action
             android:id="@+id/show_settings_fragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/show_item_data"
+            app:destination="@id/lineChart">
+            <argument
+                android:name="combinedItemInfo"
+                app:argType="com.hartleyv.android.osrsget.entities.CombinedItemListInfo" />
+            </action>
     </fragment>
 
     <fragment
@@ -21,4 +28,14 @@
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings">
     </fragment>
+
+    <fragment
+        android:id="@+id/lineChart"
+        android:name="LineChartFragment"
+        android:label="LineChart">
+        <argument
+            android:name="combinedItemInfo"
+            app:argType="com.hartleyv.android.osrsget.entities.CombinedItemListInfo" />
+    </fragment>
+
 </navigation>

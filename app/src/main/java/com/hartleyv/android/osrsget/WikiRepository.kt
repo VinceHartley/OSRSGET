@@ -17,7 +17,7 @@ import retrofit2.create
 
 private const val TAG = "Wiki repository"
 
-    class WikiRepository {
+class WikiRepository {
     private val osrsWikiApi: OSRSWikiApi
 
     init {
@@ -126,6 +126,35 @@ private const val TAG = "Wiki repository"
 
 
         return ret
+    }
+    suspend fun fetchTimeseries(timestep: String, id: String): MutableList<ItemTimestamp> {
+        delay(1000)
+        // 5m timestep is hardcoded for now until i can get this working reliably
+
+        val response = osrsWikiApi.fetchTimeseries("5m", id)
+        val jsonObject = JSONObject(response)
+        val itemPrices = jsonObject.get("data") as JSONArray
+
+        val ret = mutableListOf<ItemTimestamp>()
+
+        for (i in 0 until itemPrices.length())  {
+            var itemPrice = itemPrices.get(0) as JSONObject
+
+            val iprice = ItemTimestamp(
+                id.toInt(),
+                "5m",
+                itemPrice.get("timestamp") as? Int,
+                itemPrice.get("avgHighPrice") as? Int,
+                itemPrice.get("avgLowPrice") as? Int,
+                itemPrice.get("highPriceVolume") as? Int,
+                itemPrice.get("lowPriceVolume") as? Int
+            )
+
+            ret += iprice
+        }
+
+        return ret
+
     }
 
     companion object {

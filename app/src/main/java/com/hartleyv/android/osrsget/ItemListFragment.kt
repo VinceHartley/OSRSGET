@@ -24,6 +24,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.hartleyv.android.osrsget.databinding.FragmentItemListBinding
+import com.hartleyv.android.osrsget.entities.CombinedItemListInfo
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -109,11 +110,14 @@ class ItemListFragment: Fragment() {
 
                 // view list changes
                 itemListViewModel.filteredItems.collect{ items ->
-                   binding.itemRecyclerView.adapter = ItemListAdapter(items)
+                    val adapter = ItemListAdapter(items, {clickedItem -> navigateToLineChartFragment(clickedItem)})
+                   binding.itemRecyclerView.adapter = adapter
                }
             }
         }
 
+        //this fragment should always be vertical
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         return binding.root
     }
 
@@ -158,6 +162,15 @@ class ItemListFragment: Fragment() {
 
     }
 
+
+    private fun navigateToLineChartFragment(item: CombinedItemListInfo) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            findNavController().navigate(
+                ItemListFragmentDirections.showItemData(item)
+            )
+
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

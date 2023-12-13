@@ -1,7 +1,7 @@
 package com.hartleyv.android.osrsget.api
 
-import org.json.JSONObject
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface OSRSWikiApi {
     @GET("/api/v1/osrs/latest")
@@ -12,5 +12,9 @@ interface OSRSWikiApi {
 
     @GET("/api/v1/osrs/24h")
     suspend fun fetchDailyAverages(): String
+
+
+    @GET("/api/v1/osrs/timeseries")
+    suspend fun fetchTimeseries(@Query("timestep") param1: String, @Query("id") param2: String): String
 
 }

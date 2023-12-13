@@ -2,14 +2,14 @@ package com.hartleyv.android.osrsget
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.hartleyv.android.osrsget.databinding.ListItemItemBinding
 import com.hartleyv.android.osrsget.entities.CombinedItemListInfo
 import java.text.NumberFormat
 
 class ItemHolder(
-    private val binding: ListItemItemBinding
+    private val binding: ListItemItemBinding,
+    private val onItemClick: (CombinedItemListInfo) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: CombinedItemListInfo) {
 
@@ -26,24 +26,21 @@ class ItemHolder(
 
         // list item click listener
         binding.root.setOnClickListener {
-            Toast.makeText(
-                binding.root.context,
-                "${item.itemId} clicked",
-                Toast.LENGTH_SHORT
-            ).show()
+//            onItemClick.invoke(item)
         }
     }
 }
 
 
 class ItemListAdapter(
-    private val itemListInfo: List<CombinedItemListInfo>
+    private val itemListInfo: List<CombinedItemListInfo>,
+    private val onItemClick: (CombinedItemListInfo) -> Unit
 ) : RecyclerView.Adapter<ItemHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemItemBinding.inflate(inflater, parent, false)
-        return ItemHolder(binding)
+        return ItemHolder(binding, onItemClick)
     }
 
     override fun getItemCount(): Int {
